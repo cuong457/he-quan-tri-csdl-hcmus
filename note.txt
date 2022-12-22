@@ -1,0 +1,34 @@
+diagram 10% - Done 
+phân quyền người dùng, 10% - Chờ các hàm
+GUI - 5% done
+tình huống tranh chấp: thiếu Lost update - phantom
+
+code giao diện ứng dụng - web: code để demo
+
+USP_QUANLICUAHANG
+USP_QUANLITHUCDON
+USP_DATHANG
+USP_CAPNHATTRANGTHAI
+
+hệ đối tác: hàm
+- Đk thông tin
+- lập hợp đồng
+- ql số liệu: sài view
+
+khách hàng
+- đk thành viên
+- theo dõi: sài view
+
+tài xế:
+- đk thành viên
+- tiếp nhận đơn theo khu vực
+- lương
+
+nhân viên:
+- Ql đối tác: sài view
+
+quản trị: script phân quyền
+
+
+
+quản trị:
