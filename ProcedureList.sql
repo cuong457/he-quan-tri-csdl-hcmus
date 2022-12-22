@@ -50,6 +50,8 @@ commit transaction
 return 0
 go
 
+--exec USP_DANGKYTHONGTIN @MaDoiTac, @SDT, @LoaiAmThuc, @SoLuongDonHangNgay, @SoLuongChiNhanh, @DiaChi, @TenQuan, @NguoiDaiDien, @Email
+
 -- ================================= Quản lý cửa hàng - Đối tác =================================
 if object_id('USP_QUANLICUAHANG') is not null
 	drop proc USP_QUANLICUAHANG
@@ -244,9 +246,9 @@ go
 exec USP_THEMMONAN
 @MADOITAC='DT001',
 @THUCDON='TD001',
-@MAMONAN='MA004',
-@TENMON =N'Vãi kẹc',
-@MIEUTA =N'DDCm java',
+@MAMONAN='MA003',
+@TENMON =N'Cơm chiên cá mập',
+@MIEUTA =N'Thơm ngon',
 @GIA =500,
 @TINHTRANG =N'Còn món',
 @SOLUONG =100,
@@ -358,20 +360,24 @@ begin transaction
 			return 1
 		end
 
+		declare @MaChiTiet varchar(50)
+		declare @MaKhachHang varchar(50)		
 
-		if exists (select * from CHITIETDONHANG where MAMONAN = @MAMONAN and DOITAC = @MADOITAC)
-		begin
-			print N'Không thể xóa món ăn vì đang có người đặt hàng.'
-			rollback transaction
-			return 1
-		end
+		--DROP TABLE IF EXISTS thuongmaidientu.dbo.MyNewTable;
+		select * into MyNewTable from
+		(select ct.MADONDATHANG ChiTiet from [CHITIETDONHANG] ct
+		where ct.MAMONAN = @MAMONAN and ct.DOITAC = @MADOITAC) mySourceData; 
 
+		delete from CHITIETDONHANG where MADONDATHANG in (select * from MyNewTable)
+		delete from DONDATHANG where MADONDATHANG in (select * from MyNewTable)
 		delete from MONAN where THUCDON = @THUCDON and MAMONAN = @MAMONAN
+
+		DROP TABLE IF EXISTS thuongmaidientu.dbo.MyNewTable;
 
 	end try
 
 	begin catch
-		print N'Lỗi'
+		print N'Lỗi hệ thống'
 		rollback transaction
 		return 1
 	end catch
@@ -380,8 +386,11 @@ commit transaction
 return 0
 go
 
+select * from CHITIETDONHANG
+select * from DONDATHANG
 select * from MONAN
-exec USP_XOAMONAN @MADOITAC='DT001', @THUCDON='TD001', @MAMONAN='MA004'
+exec USP_XOAMONAN @MADOITAC='DT001', @THUCDON='TD001', @MAMONAN='MA003'
+
 
 -- ================================= Quản lý đơn đặt hàng - Đối tác =================================
 if object_id('USP_CAPNHATTRANGTHAI') is not null
@@ -584,6 +593,9 @@ begin transaction
 			rollback transaction
 			return 1
 		end
+
+		insert into HOPDONG values (@MaHopDong, @TenNganHang, @ChiNhanh, @SoTaiKhoan, @DiaChi, @NguoiDaiDien,
+									@SoChiNhanh, @MaSoThue, @ThoiHan, @PhiHoaHong, @TinhTrang, @DoiTac)
 		
 	end try
 
@@ -597,6 +609,29 @@ commit transaction
 return 0
 go
 
+if object_id('USP_XACNHANHOPDONG') is not null
+	drop proc USP_XACNHANHOPDONG
+go
+create proc USP_XACNHANHOPDONG
+	@MaHopDong varchar(50)
+as
+begin tran
+	begin try
+
+		update HOPDONG set TINHTRANG = N'Xác nhận' where MAHOPDONG = @MaHopDong
+	end try
+
+	begin catch
+		print N'lỗi hệ thống'
+		rollback transaction
+		return 1
+	end catch
+
+commit transaction
+return 0
+go
+
+--select * from HOPDONG
 
 -- ================================= Đăng ký - Khách hàng =================================
 if object_id('USP_DANGKYKHACHHANG') is not null

@@ -22,7 +22,7 @@ create table HOPDONG
  MASOTHUE nvarchar(50),
  THOIHAN date,
  PHIHOAHONG float,
- TINGTRANG nvarchar(50),
+ TINHTRANG nvarchar(50),
  DOITAC varchar(50), -- foreign key
 
  primary key(MAHOPDONG)
