@@ -481,8 +481,8 @@ begin transaction
 		update MONAN set SOLUONG=((select SOLUONG from MONAN where MAMONAN=@MONAN and THUCDON=@THUCDON) - @SOLUONG) where MAMONAN=@MONAN and THUCDON=@THUCDON
 		insert into DONDATHANG values (@MADONDATHANG, @MAKHACHHANG, @MADOITAC, 'TX001', N'Chờ xác nhận', @THANHTIEN)
 		insert into CHITIETDONHANG values (@MACHITIET, @MADONDATHANG, @MAKHACHHANG, @MADOITAC, @MONAN, @SOLUONG, 
-											(select top 1 TENQUAN from CUAHANG where MADOITAC=@MADOITAC), 
-											(select top 1 DIACHI from CUAHANG where MADOITAC=@MADOITAC))
+											(select top 1 TENQUAN from DOITAC where MADOITAC=@MADOITAC), 
+											(select top 1 DIACHI from DOITAC where MADOITAC=@MADOITAC))
 	end try
 
 	begin catch
@@ -494,7 +494,6 @@ begin transaction
 commit transaction
 return 0
 go
-
 
 -- ================================= Tạo hợp đồng mới =================================
 if object_id('USP_LAPHOPDONG') is not null
