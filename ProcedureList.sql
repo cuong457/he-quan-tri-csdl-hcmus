@@ -477,8 +477,9 @@ begin transaction
 			rollback transaction
 			return 1
 		end
+
 		update MONAN set SOLUONG=((select SOLUONG from MONAN where MAMONAN=@MONAN and THUCDON=@THUCDON) - @SOLUONG) where MAMONAN=@MONAN and THUCDON=@THUCDON
-		insert into DONDATHANG values (@MADONDATHANG, @MAKHACHHANG, @MADOITAC, 'null', N'Chờ xác nhận', @THANHTIEN)
+		insert into DONDATHANG values (@MADONDATHANG, @MAKHACHHANG, @MADOITAC, 'TX001', N'Chờ xác nhận', @THANHTIEN)
 		insert into CHITIETDONHANG values (@MACHITIET, @MADONDATHANG, @MAKHACHHANG, @MADOITAC, @MONAN, @SOLUONG, 
 											(select top 1 TENQUAN from CUAHANG where MADOITAC=@MADOITAC), 
 											(select top 1 DIACHI from CUAHANG where MADOITAC=@MADOITAC))
@@ -557,6 +558,28 @@ begin transaction
 		insert into HOPDONG values (@MaHopDong, @TenNganHang, @ChiNhanh, @SoTaiKhoan, @DiaChi, @NguoiDaiDien,
 									@SoChiNhanh, @MaSoThue, @ThoiHan, @PhiHoaHong, @TinhTrang, @DoiTac)
 		
+	end try
+
+	begin catch
+		print N'lỗi hệ thống'
+		rollback transaction
+		return 1
+	end catch
+
+commit transaction
+return 0
+go
+
+if object_id('USP_XACNHANHOPDONG') is not null
+	drop proc USP_XACNHANHOPDONG
+go
+create proc USP_XACNHANHOPDONG
+	@MaHopDong varchar(50)
+as
+begin tran
+	begin try
+
+		update HOPDONG set TINHTRANG = N'Xác nhận' where MAHOPDONG = @MaHopDong
 	end try
 
 	begin catch

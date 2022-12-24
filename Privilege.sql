@@ -323,10 +323,13 @@ go
 use thuongmaidientu
 go
 grant select on OBJECT::KHACHHANG to KhachHang
-grant select on OBJECT::MONAN to KhachHang
+grant select, update on OBJECT::MONAN to KhachHang
 grant select on OBJECT::TUYCHON to KhachHang
 grant select on OBJECT::DONDATHANG to KhachHang
 grant select on OBJECT::CHITIETDONHANG to KhachHang
+grant select on OBJECT::DOITAC to KhachHang
+grant select on OBJECT::THUCDON to KhachHang
+grant select on OBJECT::CUAHANG to KhachHang
 
 grant execute on OBJECT::dbo.USP_DANGKYKHACHHANG to KhachHang
 grant execute on OBJECT::dbo.USP_DATHANG to KhachHang
@@ -339,6 +342,7 @@ go
 use thuongmaidientu
 go
 grant select on OBJECT::NHANVIEN to NhanVien
+grant select on OBJECT::KHACHHANG to NhanVien
 grant select on OBJECT::HOPDONG to NhanVien
 
 grant execute on OBJECT::dbo.USP_LAPHOPDONG to NhanVien
@@ -354,7 +358,5 @@ grant select, update on OBJECT::KHACHHANG to QuanTri with grant option
 grant select, update on OBJECT::TAIXE to QuanTri with grant option
 grant select, insert, delete, update on OBJECT::NHANVIEN to QuanTri with grant option
 grant select, insert, delete, update on OBJECT::QUANTRI to QuanTri with grant option
-go
 
--- ===================== XÓA ===================
---
+go
