@@ -40,6 +40,7 @@ create table DOITAC
  NGUOIDAIDIEN nvarchar(50),
  EMAIL varchar(50),
  TINHTRANG nvarchar(50),
+ TAIKHOAN varchar(50),
 
  primary key(MADOITAC)
 )
@@ -50,9 +51,19 @@ create table KHACHHANG
  HOTEN nvarchar(50),
  SDT varchar(50),
  DIACHI nvarchar(50),
- EMAIL varchar(50)
+ EMAIL varchar(50),
+ TAIKHOAN varchar(50),
 
  primary key(MAKHACHHANG)
+)
+
+
+create table TAIKHOAN
+(
+	MATAIKHOAN varchar(50),
+	TENDANGNHAP varchar(50),
+	MATKHAU varchar(50),
+	VAITRO nvarchar(50),
 )
 
 create table TAIXE
@@ -66,6 +77,7 @@ create table TAIXE
  EMAIL varchar(50),
  SOTAIKHOAN varchar(50),
  TENNGANHANG nvarchar(50),
+ TAIKHOAN varchar(50),
 
  primary key (MATAIXE)
 )
@@ -77,7 +89,8 @@ create table NHANVIEN
  HOTEN nvarchar(50),
  SDT varchar(50),
  DIACHI nvarchar(50),
- EMAIL varchar(50)
+ EMAIL varchar(50), 
+ TAIKHOAN varchar(50),
 
  primary key(MANHANVIEN)
 )
@@ -89,7 +102,8 @@ create table QUANTRI
  HOTEN nvarchar(50),
  SDT varchar(50),
  DIACHI nvarchar(50),
- EMAIL varchar(50)
+ EMAIL varchar(50),
+ TAIKHOAN varchar(50),
 
  primary key(MAQUANTRI)
 )
@@ -111,8 +125,8 @@ create table MONAN
  GIA float,
  TINHTRANG nvarchar(50),
  TUYCHON varchar(50), -- foreign key TUYCHON(MATUYCHON)
- TENTUYCHON nvarchar(50), -- foreign key TUYCHON(MATUYCHON)
- SOLUONG int
+ SOLUONG int,
+ TENTUYCHON nvarchar(50),
 
  primary key (MAMONAN, THUCDON),
  constraint UC_TENMON unique(TENMON)
@@ -145,15 +159,14 @@ create table CUAHANG
  TENQUAN nvarchar(50),
  CHINHANHTHU int,
  DIACHI nvarchar(50),
- GIOMOCUA time,
- GIODONGCUA time,
+ GIOMOCUA varchar(50),
+ GIODONGCUA varchar(50),
  TINHTRANG nvarchar(50),
  CAPNHAT date
 
  primary key(MADOITAC, MACUAHANG)
 )
 
---drop table CHITIETDONHANG
 create table CHITIETDONHANG
 (
  MACHITIETDONHANG varchar(50),
@@ -172,7 +185,6 @@ alter table CUAHANG
 add 
 	foreign key(MADOITAC)
 	references DOITAC
-
 alter table HOPDONG 
 add 
 foreign key(DOITAC) 
@@ -205,69 +217,62 @@ add
 foreign key(MADONDATHANG, KHACHHANG, DOITAC)
 references DONDATHANG
 
---select * from hopdong
---select * from dondathang
---select * from doitac
---select * from monan
---select * from thucdon
---select * from taixe
---select * from khachhang
---select * from nhanvien
---select * from quantri
---select * from tuychon
+
+
 
 insert into DOITAC
-values ('DT001', '0909090901', N'Cơm', 100, 10, N'227 Nguyễn Văn Cừ Quận 5 TPHCM', N'Cơm', N'Lý Văn Đạt', 'lydat@gmail.com', N'Đã xác nhận')
+values ('DT001', '0909090901', N'Cơm', 100, 10, N'227 Nguyễn Văn Cừ Quận 5 TPHCM', N'Cơm', N'Lý Văn Đạt', 'lydat@gmail.com', N'Đã xác nhận', 'null')
 insert into DOITAC
-values ('DT002', '0909090902', N'Cơm', 200, 20, N'228 Nguyễn Cừ Quận 6 TPHCM', N'Phở', N'Lý Văn B', 'lydatpro@gmail.com', N'Đã xác nhận')
+values ('DT002', '0909090902', N'Cơm', 200, 20, N'228 Nguyễn Cừ Quận 6 TPHCM', N'Phở', N'Lý Văn B', 'lydatpro@gmail.com', N'Đã xác nhận', 'null')
 insert into DOITAC
-values ('DT003', '0909090903', N'Cơm', 300, 30, N'229 Cư Trinh Quận 7 TPHCM', N'Bún riêu', N'Lý Văn C', 'lydatvip@gmail.com', N'Đã xác nhận')
+values ('DT003', '0909090903', N'Cơm', 300, 30, N'229 Cư Trinh Quận 7 TPHCM', N'Bún riêu', N'Lý Văn C', 'lydatvip@gmail.com', N'Đã xác nhận', 'null')
 insert into DOITAC
-values ('DT004', '0909090904', N'Cơm', 400, 40, N'230 Phạm Văn Đồng Quận 8 TPHCM', N'Đa dạng', N'Lý Văn D', 'lydatsieunhan@gmail.com', N'Đã xác nhận')
+values ('DT004', '0909090904', N'Cơm', 400, 40, N'230 Phạm Văn Đồng Quận 8 TPHCM', N'Đa dạng', N'Lý Văn D', 'lydatsieunhan@gmail.com', N'Đã xác nhận', 'null')
 insert into DOITAC
-values ('DT005', '0909090905', N'Cơm', 500, 50, N'231 Cửu Long Quận 9 TPHCM', N'Bún mắm', N'Lý Văn E', 'lydat30@gmail.com', N'Đã xác nhận')
+values ('DT005', '0909090905', N'Cơm', 500, 50, N'231 Cửu Long Quận 9 TPHCM', N'Bún mắm', N'Lý Văn E', 'lydat30@gmail.com', N'Đã xác nhận', 'null')
 
 
 insert into KHACHHANG
-values('KH001', N'Lý Văn Đạt', '0101010101', N'30 Cô Đông Phường 3 TPHCM', N'datne@gmail.com')
+values('KH001', N'Lý Văn Đạt', '0101010101', N'30 Cô Đông
+Phường 3 TPHCM', N'datne@gmail.com', 'null')
 insert into KHACHHANG
-values('KH002', N'Lý Văn Cường', '0101010102', N'30 Cô Đông Phường 3 TPHCM', N'dongne@gmail.com')
+values('KH002', N'Lý Văn Cường', '0101010102', N'30 Cô Đông Phường 3 TPHCM', N'dongne@gmail.com', 'null')
 insert into KHACHHANG
-values('KH003', N'Lý Văn Đức', '0101010103', N'30 Tân Định Phường 3 TPHCM', N'cuongne@gmail.com')
+values('KH003', N'Lý Văn Đức', '0101010103', N'30 Tân Định Phường 3 TPHCM', N'cuongne@gmail.com', 'null')
 insert into KHACHHANG
-values('KH004', N'Lý Văn Đông', '0101010104', N'30 Thạch Lam Phường 3 TPHCM', N'ducne@gmail.com')
+values('KH004', N'Lý Văn Đông', '0101010104', N'30 Thạch Lam Phường 3 TPHCM', N'ducne@gmail.com', 'null')
 insert into KHACHHANG
-values('KH005', N'Lý Văn Đại', '0101010105', N'30 Bửu Quang Phường 3 TPHCM', N'daine@gmail.com')
+values('KH005', N'Lý Văn Đại', '0101010105', N'30 Bửu Quang Phường 3 TPHCM', N'daine@gmail.com', 'null')
 
 -- taixe , nhanvien, quantri, thucdon
 insert into TAIXE
-values('TX001', N'Hoàng Đại', '0202020201', N'28 Hiệp Phát Phường 3 TPHCM', '21A-0009', N'Nhà Bè', 'tx1@gmail.com', '000000001', N'Ngân hàng nhà nước VN')
+values('TX001', N'Hoàng Đại', '0202020201', N'28 Hiệp Phát Phường 3 TPHCM', '21A-0009', N'Nhà Bè', 'tx1@gmail.com', '000000001', N'Ngân hàng nhà nước VN', 'null')
 insert into TAIXE
-values('TX002', N'Hoàng Đức', '0202020202', N'28 Đường Số 19 Phường 2 TPHCM', '21A-0009', N'Quận 5', 'tx2@gmail.com', '000000002', N'Ngân hàng nhà nước VN')
+values('TX002', N'Hoàng Đức', '0202020202', N'28 Đường Số 19 Phường 2 TPHCM', '21A-0009', N'Quận 5', 'tx2@gmail.com', '000000002', N'Ngân hàng nhà nước VN', 'null')
 insert into TAIXE
-values('TX003', N'Hoàng Đông', '0202020203', N'28 Phan QUang Phường 12 TPHCM', '21A-0009', N'Quận 9', 'tx2@gmail.com', '000000003', N'Ngân hàng nhà nước VN')
+values('TX003', N'Hoàng Đông', '0202020203', N'28 Phan QUang Phường 12 TPHCM', '21A-0009', N'Quận 9', 'tx2@gmail.com', '000000003', N'Ngân hàng nhà nước VN', 'null')
 insert into TAIXE
-values('TX004', N'Hoàng Việt', '0202020204', N'28 Lũy Bán Bích Phường 13 TPHCM', '21A-0009', N'Quận 1', 'tx3@gmail.com', '000000004', N'Ngân hàng Sacombank')
+values('TX004', N'Hoàng Việt', '0202020204', N'28 Lũy Bán Bích Phường 13 TPHCM', '21A-0009', N'Quận 1', 'tx3@gmail.com', '000000004', N'Ngân hàng Sacombank', 'null')
 
 
 insert into NHANVIEN
-values('NV001', N'Nhân viên 1', '1101010101', N'30 Hiệp Tân Quận 12 TPHCM', N'nv1@gmail.com')
+values('NV001', N'Nhân viên 1', '1101010101', N'30 Hiệp Tân Quận 12 TPHCM', N'nv1@gmail.com', 'null')
 insert into NHANVIEN
-values('NV002', N'Nhân viên 2', '1101010102', N'30 Hiệp Tân Quận 12 TPHCM', N'nv2@gmail.com')
+values('NV002', N'Nhân viên 2', '1101010102', N'30 Hiệp Tân Quận 12 TPHCM', N'nv2@gmail.com', 'null')
 insert into NHANVIEN
-values('NV003', N'Nhân viên 3', '1101010103', N'30 Hiệp Tân Quận 12 TPHCM', N'nv3@gmail.com')
+values('NV003', N'Nhân viên 3', '1101010103', N'30 Hiệp Tân Quận 12 TPHCM', N'nv3@gmail.com', 'null')
 insert into NHANVIEN
-values('NV004', N'Nhân viên 4', '1101010104', N'30 Hiệp Tân Quận 12 TPHCM', N'nv4@gmail.com')
+values('NV004', N'Nhân viên 4', '1101010104', N'30 Hiệp Tân Quận 12 TPHCM', N'nv4@gmail.com', 'null')
 
 
 insert into QUANTRI
-values('QT001', N'Quản trị 1', '2001010101', N'32 Hiệp Tân Quận 12 TPHCM', N'qt1@gmail.com')
+values('QT001', N'Quản trị 1', '2001010101', N'32 Hiệp Tân Quận 12 TPHCM', N'qt1@gmail.com', 'null')
 insert into QUANTRI
-values('QT002', N'Quản trị 2', '2001010102', N'32 Hiệp Tân Quận 12 TPHCM', N'qt2@gmail.com')
+values('QT002', N'Quản trị 2', '2001010102', N'32 Hiệp Tân Quận 12 TPHCM', N'qt2@gmail.com', 'null')
 insert into QUANTRI
-values('QT003', N'Quản trị 3', '2001010103', N'32 Hiệp Tân Quận 12 TPHCM', N'qt3@gmail.com')
+values('QT003', N'Quản trị 3', '2001010103', N'32 Hiệp Tân Quận 12 TPHCM', N'qt3@gmail.com', 'null')
 insert into QUANTRI
-values('QT004', N'Quản trị 4', '2001010104', N'32 Hiệp Tân Quận 12 TPHCM', N'qt4@gmail.com')
+values('QT004', N'Quản trị 4', '2001010104', N'32 Hiệp Tân Quận 12 TPHCM', N'qt4@gmail.com', 'null')
 
 
 insert into THUCDON
@@ -294,22 +299,23 @@ insert into TUYCHON
 values('TC002', N'Ít ớt')
 
 
+
 insert into MONAN
-values('MA001', 'TD001', N'Phở ngon', N'Phở rất ngon', 200, N'Còn món','TC002', N'Ít ớt', 100)
+values('MA001', 'TD001', N'Phở ngon', N'Phở rất ngon', 200, N'Còn món','TC002',100, N'Ít ớt')
 insert into MONAN
-values('MA002', 'TD001', N'Phở không ngon', N'Phở rất ngon', 200, N'Còn món','TC002', N'Ít ớt', 100)
+values('MA002', 'TD001', N'Phở không ngon', N'Phở rất ngon', 200, N'Còn món','TC002',100, N'Ít ớt')
 insert into MONAN
-values('MA001', 'TD002', N'Cơm ngon', N'cơm rất ngon', 200, N'Còn món','TC002', N'Ít ớt', 100)
+values('MA001', 'TD002', N'Cơm ngon', N'cơm rất ngon', 200, N'Còn món','TC002',100, N'Ít ớt')
 insert into MONAN
-values('MA002', 'TD002', N'Cơm không ngon', N'cơm rất ngon', 200, N'Còn món','TC002', N'Ít ớt', 100)
+values('MA002', 'TD002', N'Cơm không ngon', N'cơm rất ngon', 200, N'Còn món','TC002',100, N'Ít ớt')
 insert into MONAN
-values('MA001', 'TD003', N'Bún ngon', N'Bún rất ngon', 200, N'Còn món','TC002', N'Ít ớt', 100)
+values('MA001', 'TD003', N'Bún ngon', N'Bún rất ngon', 200, N'Còn món','TC002',100, N'Ít ớt')
 insert into MONAN
-values('MA002', 'TD003', N'Bún không ngon', N'Bún rất ngon', 200, N'Còn món','TC002', N'Ít ớt', 100)
+values('MA002', 'TD003', N'Bún không ngon', N'Bún rất ngon', 200, N'Còn món','TC002',100, N'Ít ớt')
 insert into MONAN
-values('MA001', 'TD004', N'Trà sữa', N'Tôm rất ngon', 200, N'Còn món','TC001', N'Ít đường', 100)
+values('MA001', 'TD004', N'Trà sữa', N'Tôm rất ngon', 200, N'Còn món','TC001',100, N'Ít đường')
 insert into MONAN
-values('MA002', 'TD004', N'Trà sữa hoàng kim', N'Tôm rất ngon', 200, N'Còn món','TC001', N'Ít đường', 100)
+values('MA002', 'TD004', N'Trà sữa hoàng kim', N'Tôm rất ngon', 200, N'Còn món','TC001',100, N'Ít đường')
 
 
 -- bỏ số lượng chị nhánh, địa chỉ, chinhanh, nguoi dai dien
@@ -326,7 +332,6 @@ values('DDH002', 'KH001', 'DT002', 'TX001', N'Chờ xác nhận', 2000)
 insert into DONDATHANG
 values('DDH003', 'KH002', 'DT001', 'TX001', N'Chờ xác nhận', 3000)
 
-
 insert into CUAHANG values ('DT001', 'CH001', N'HAIDILO', 1, N'87 phan xích long bình thạnh tphcm', '08:00:00', '17:00:00', N'Đang mở', '1-1-2020')
 insert into CUAHANG values ('DT001', 'CH002', N'HAIDILO', 2, N'89 phan xích long bình thạnh tphcm', '08:00:00', '17:00:00', N'Đang mở', '1-1-2020')
 insert into CUAHANG values ('DT002', 'CH001', N'KICHI', 1, N'101 nguyễn sơn g bình thạnh tphcm', '08:00:00', '17:00:00', N'Đang mở', '1-1-2020')
@@ -335,3 +340,18 @@ insert into CUAHANG values ('DT002', 'CH002', N'KICHI', 1, N'87 mai đào bình 
 insert into CHITIETDONHANG values ('CT001', 'DDH001', 'KH001', 'DT001', 'MA001',5, N'HADILAO', '87 Phan Xích Long Bình Thành TPHCM')
 insert into CHITIETDONHANG values ('CT002', 'DDH001', 'KH001', 'DT001', 'MA003',10, N'HADILAO', '87 Phan Xích Long Bình Thành TPHCM')
 insert into CHITIETDONHANG values ('CT003', 'DDH003', 'KH002', 'DT001', 'MA003',10, N'HADILAO', '87 Phan Xích Long Bình Thành TPHCM')
+
+use thuongmaidientu 
+go
+
+select * from hopdong
+select * from dondathang
+select * from doitac
+select * from monan
+select * from thucdon
+select * from taixe
+select * from khachhang
+select * from nhanvien
+select * from quantri
+select * from tuychon
+select * from taikhoan

@@ -2,6 +2,75 @@
 --Phân công
 --20127457 - Phạm Nguyễn Cao Cường
 
+
+use master
+go
+exec sp_droplogin DT001
+exec sp_droplogin DT002
+exec sp_droplogin DT003
+exec sp_droplogin DT004
+exec sp_droplogin DT005
+
+exec sp_droplogin KH001
+exec sp_droplogin KH002
+exec sp_droplogin KH003
+exec sp_droplogin KH004
+exec sp_droplogin KH005
+
+exec sp_droplogin TX001
+exec sp_droplogin TX002
+exec sp_droplogin TX003
+exec sp_droplogin TX004
+
+exec sp_droplogin NV001
+exec sp_droplogin NV002
+exec sp_droplogin NV003
+exec sp_droplogin NV004
+
+exec sp_droplogin QT001
+exec sp_droplogin QT002
+exec sp_droplogin QT003
+exec sp_droplogin QT004
+go
+
+use thuongmaidientu
+go
+drop user DoiTac001
+drop user DoiTac002
+drop user DoiTac003
+drop user DoiTac004
+drop user DoiTac005
+go
+drop user KhachHang001
+drop user KhachHang002
+drop user KhachHang003
+drop user KhachHang004
+drop user KhachHang005
+go
+drop user TaiXe001
+drop user TaiXe002
+drop user TaiXe003
+drop user TaiXe004
+go
+drop user NhanVien001
+drop user NhanVien002
+drop user NhanVien003
+drop user NhanVien004
+go
+drop user QuanTri001
+drop user QuanTri002
+drop user QuanTri003
+drop user QuanTri004
+go
+use thuongmaidientu
+go
+drop role DoiTac
+drop role KhachHang
+drop role TaiXe
+drop role NhanVien
+drop role QuanTri
+
+
 --====================== Tạo LOGIN ======================--
 
 -- Tạo login cho ĐỐI TÁC
@@ -197,23 +266,84 @@ alter role QuanTri add member QuanTri003
 alter role QuanTri add member QuanTri004
 go
 
---====================== TẠO VIEW ======================--
---Đối tác 1
 use thuongmaidientu
 go
---create view VIEW_DOITAC as
---select * from DOITAC
---go
+alter role NhanVien add member NhanVien001
+alter role NhanVien add member NhanVien002
+alter role NhanVien add member NhanVien003
+alter role NhanVien add member NhanVien004
+go
 
+use thuongmaidientu
+go
+alter role TaiXe add member TaiXe001
+alter role TaiXe add member TaiXe002
+alter role TaiXe add member TaiXe003
+alter role TaiXe add member TaiXe004
+go
+
+-- =========================================================
+-- Đối tác
+use thuongmaidientu
+go
 grant select on OBJECT::DOITAC to DoiTac
+grant select on OBJECT::HOPDONG to DoiTac
 
+grant select on OBJECT::THUCDON to DoiTac
+grant select on OBJECT::MONAN to DoiTac
+grant select on OBJECT::TUYCHON to DoiTac
+grant select on OBJECT::DONDATHANG to DoiTac
+grant select on OBJECT::CUAHANG to DoiTac
+grant select on OBJECT::CHITIETDONHANG to DoiTac
+grant select on OBJECT::DONDATHANG to DoiTac
+
+grant execute on OBJECT::dbo.USP_DANGKYTHONGTIN to DoiTac
+grant execute on OBJECT::dbo.USP_QUANLICUAHANG to DoiTac
+grant execute on OBJECT::dbo.USP_THEMMONAN to DoiTac
+grant execute on OBJECT::dbo.USP_QUANLITHUCDON to DoiTac
+grant execute on OBJECT::dbo.USP_XOAMONAN to DoiTac
+grant execute on OBJECT::dbo.USP_CAPNHATTRANGTHAI to DoiTac
+
+go
+
+-- ========================================================
+-- Tài xế
 use thuongmaidientu
 go
-create view VIEW_DONDATHANG as
-select MADONDATHANG, DOITAC, TINHTRANG, THANHTIEN from DONDATHANG
-go
-grant select on OBJECT::VIEW_DONDATHANG to KhachHang
+grant select on OBJECT::TAIXE to TaiXe
 
+grant execute on OBJECT::dbo.USP_DANGKYTAIXE to TaiXe
+grant execute on OBJECT::dbo.USP_CAPNHATTRANGTHAI to TaiXe
+grant select on OBJECT::DONDATHANG to TaiXe
+
+go
+
+-- ========================================================
+-- Khách hàng
+use thuongmaidientu
+go
+grant select on OBJECT::KHACHHANG to KhachHang
+grant select on OBJECT::MONAN to KhachHang
+grant select on OBJECT::TUYCHON to KhachHang
+grant select on OBJECT::DONDATHANG to KhachHang
+grant select on OBJECT::CHITIETDONHANG to KhachHang
+
+grant execute on OBJECT::dbo.USP_DANGKYKHACHHANG to KhachHang
+grant execute on OBJECT::dbo.USP_DATHANG to KhachHang
+grant execute on OBJECT::dbo.USP_HUYDONHANG to KhachHang
+
+go
+
+-- ========================================================
+-- Nhân viên
+use thuongmaidientu
+go
+grant select on OBJECT::NHANVIEN to NhanVien
+grant select on OBJECT::HOPDONG to NhanVien
+
+grant execute on OBJECT::dbo.USP_LAPHOPDONG to NhanVien
+
+go
 
 --=========================================================
 -- Admin
@@ -227,69 +357,4 @@ grant select, insert, delete, update on OBJECT::QUANTRI to QuanTri with grant op
 go
 
 -- ===================== XÓA ===================
---use master
---go
---exec sp_droplogin DT001
---exec sp_droplogin DT002
---exec sp_droplogin DT003
---exec sp_droplogin DT004
---exec sp_droplogin DT005
-
---exec sp_droplogin KH001
---exec sp_droplogin KH002
---exec sp_droplogin KH003
---exec sp_droplogin KH004
---exec sp_droplogin KH005
-
---exec sp_droplogin TX001
---exec sp_droplogin TX002
---exec sp_droplogin TX003
---exec sp_droplogin TX004
-
---exec sp_droplogin NV001
---exec sp_droplogin NV002
---exec sp_droplogin NV003
---exec sp_droplogin NV004
-
---exec sp_droplogin QT001
---exec sp_droplogin QT002
---exec sp_droplogin QT003
---exec sp_droplogin QT004
---go
-
---use thuongmaidientu
---go
---drop user DoiTac001
---drop user DoiTac002
---drop user DoiTac003
---drop user DoiTac004
---drop user DoiTac005
---go
---drop user KhachHang001
---drop user KhachHang002
---drop user KhachHang003
---drop user KhachHang004
---drop user KhachHang005
---go
---drop user TaiXe001
---drop user TaiXe002
---drop user TaiXe003
---drop user TaiXe004
---go
---drop user NhanVien001
---drop user NhanVien002
---drop user NhanVien003
---drop user NhanVien004
---go
---drop user QuanTri001
---drop user QuanTri002
---drop user QuanTri003
---drop user QuanTri004
---go
---use thuongmaidientu
---go
---drop role DoiTac
---drop role KhachHang
---drop role TaiXe
---drop role NhanVien
---drop role QuanTri
+--

@@ -37,7 +37,7 @@ begin transaction
 		end
 
 		insert into DOITAC values (@MaDoiTac, @SDT, @LoaiAmThuc, @SoLuongDonHangNgay, @SoLuongChiNhanh,
-									@DiaChi, @TenQuan, @NguoiDaiDien, @Email, N'Chưa xác nhận')
+									@DiaChi, @TenQuan, @NguoiDaiDien, @Email, N'Chưa xác nhận', null)
 	end try
 
 	begin catch
@@ -128,45 +128,6 @@ commit transaction
 return 0
 go
 
--- ======================================== Xóa cửa hàng ================================
-if object_id('USP_XOACUAHANG') is not null
-	drop proc USP_XOACUAHANG
-go
--- 0 - thanh cong
--- 1 - that bai
-create proc USP_XOACUAHANG
-	@MaDoiTac varchar(50),
-	@MaCuaHang varchar(50)
-as
-set transaction isolation level SERIALIZABLE
-begin transaction
-	begin try
-		if not exists (select * from DOITAC where MADOITAC = @MADOITAC)
-		begin
-			print N'Không tìm thấy đối tác với mã ' + @MADOITAC
-			rollback transaction
-			return 1
-		end
-
-		if not exists (select * from CUAHANG where MADOITAC = @MADOITAC and MACUAHANG = @MACUAHANG)
-		begin
-			print N'Cửa hàng cần xóa không tồn tại'
-			rollback transaction
-			return 1
-		end
-		
-		delete from CUAHANG where MADOITAC = @MaDoiTac and MACUAHANG = @MaCuaHang
-
-	end try
-
-	begin catch
-		print N'lỗi hệ thống'
-		rollback transaction
-		return 1
-	end catch
-commit transaction
-return 0
-go
 
 -- ================================= Thêm món ăn - đối tác ============================
 if object_id('USP_THEMMONAN') is not null
@@ -230,11 +191,11 @@ begin transaction
 			return 1
 		end
 		
-		insert into MONAN values (@MAMONAN, @THUCDON, @TENMON, @MIEUTA, @GIA, @TINHTRANG, @TUYCHON, @TENTUYCHON, @SOLUONG)
+		insert into MONAN values (@MAMONAN, @THUCDON, @TENMON, @MIEUTA, @GIA, @TINHTRANG, @TUYCHON, @SOLUONG, @TENTUYCHON)
 	end try
 
 	begin catch
-		print N'Lỗi'
+		print N'Lỗi hệ thống'
 		rollback transaction
 		return 1
 	end catch
@@ -243,17 +204,17 @@ commit transaction
 return 0
 go
 
-exec USP_THEMMONAN
-@MADOITAC='DT001',
-@THUCDON='TD001',
-@MAMONAN='MA003',
-@TENMON =N'Cơm chiên cá mập',
-@MIEUTA =N'Thơm ngon',
-@GIA =500,
-@TINHTRANG =N'Còn món',
-@SOLUONG =100,
-@TUYCHON ='TC002',
-@TENTUYCHON = N'Ít ớt'
+--exec USP_THEMMONAN
+--@MADOITAC='DT001',
+--@THUCDON='TD001',
+--@MAMONAN='MA003',
+--@TENMON =N'Cơm chiên cá mập',
+--@MIEUTA =N'Thơm ngon',
+--@GIA =500,
+--@TINHTRANG =N'Còn món',
+--@SOLUONG =100,
+--@TUYCHON ='TC002',
+--@TENTUYCHON = N'Ít ớt'
 
 -- ================================= Quản lý thực đơn - Đối tác =================================
 if object_id('USP_QUANLITHUCDON') is not null
@@ -386,11 +347,10 @@ commit transaction
 return 0
 go
 
-select * from CHITIETDONHANG
-select * from DONDATHANG
-select * from MONAN
-exec USP_XOAMONAN @MADOITAC='DT001', @THUCDON='TD001', @MAMONAN='MA003'
-
+--select * from CHITIETDONHANG
+--select * from DONDATHANG
+--select * from MONAN
+--exec USP_XOAMONAN @MADOITAC='DT001', @THUCDON='TD001', @MAMONAN='MA003'
 
 -- ================================= Quản lý đơn đặt hàng - Đối tác =================================
 if object_id('USP_CAPNHATTRANGTHAI') is not null
@@ -480,7 +440,7 @@ begin transaction
 	begin try
 		if not exists (select * from MONAN where MAMONAN = @MONAN and THUCDON=@THUCDON)
 		begin
-			print N'Không tìm món ăn này'
+			print N'Không tìm thấy món ăn này'
 			rollback transaction
 			return 1
 		end
@@ -609,28 +569,6 @@ commit transaction
 return 0
 go
 
-if object_id('USP_XACNHANHOPDONG') is not null
-	drop proc USP_XACNHANHOPDONG
-go
-create proc USP_XACNHANHOPDONG
-	@MaHopDong varchar(50)
-as
-begin tran
-	begin try
-
-		update HOPDONG set TINHTRANG = N'Xác nhận' where MAHOPDONG = @MaHopDong
-	end try
-
-	begin catch
-		print N'lỗi hệ thống'
-		rollback transaction
-		return 1
-	end catch
-
-commit transaction
-return 0
-go
-
 --select * from HOPDONG
 
 -- ================================= Đăng ký - Khách hàng =================================
@@ -663,7 +601,7 @@ begin transaction
 			return 1
 		end
 		
-		insert into KHACHHANG values (@MaKhachHang, @HoTen, @SDT, @DiaChi, @Email)
+		insert into KHACHHANG values (@MaKhachHang, @HoTen, @SDT, @DiaChi, @Email, null)
 
 	end try
 
@@ -761,7 +699,7 @@ begin transaction
 		end
 		
 		insert into TAIXE values (@MaTaiXe, @HoTen, @SDT, @DiaChi, @BienSoXe, 
-										@KhuVuc, @EMAIL, @SoTaiKhoan, @TenNganHang)
+										@KhuVuc, @EMAIL, @SoTaiKhoan, @TenNganHang, null)
 
 	end try
 
@@ -774,8 +712,6 @@ begin transaction
 commit transaction
 return 0
 go
-
--- ==========================================================================
 
 
 
