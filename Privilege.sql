@@ -311,6 +311,7 @@ go
 use thuongmaidientu
 go
 grant select on OBJECT::TAIXE to TaiXe
+grant select, update on OBJECT::DONDATHANG to TaiXe
 
 grant execute on OBJECT::dbo.USP_DANGKYTAIXE to TaiXe
 grant execute on OBJECT::dbo.USP_CAPNHATTRANGTHAI to TaiXe

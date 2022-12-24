@@ -396,9 +396,9 @@ begin transaction
 			return 1
 		end
 
-		if (@TinhTrang not in (N'Chờ nhận', N'Đang chuẩn bị', N'Đã nhận đơn hàng'))
+		if (@TinhTrang not in (N'Chờ nhận', N'Đang chuẩn bị', N'Đang giao', N'Đã nhận đơn hàng'))
 		begin
-			print N'Tình trạng đơn đặt hàng là Chờ nhận, Đang chuẩn bị hoặc Đã nhận đơn hàng'
+			print N'Tình trạng đơn đặt hàng là Chờ nhận, Đang chuẩn bị, Đang giao hoặc Đã nhận đơn hàng'
 			rollback transaction
 			return 1
 		end
